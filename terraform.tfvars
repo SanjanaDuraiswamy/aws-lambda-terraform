@@ -1,16 +1,16 @@
 aws_region      = "us-east-1"
-function_name   = "brillio-coe-lambda"
-lambda_role_arn = "arn:aws:iam::060118751555:role/your-lambda-exec-role"
+function_name   = "sanjana-lambda"
+lambda_role_arn = "arn:aws:iam::501557777808:role/lambda-exec-role"
 handler         = "lambda-fun.handler"
 runtime         = "python3.12"
 timeout         = 30
 memory_size     = 256
 
 tags = {
-  Name           = "brillio-coe-lambda"
-  Owner          = "Sanjana D"
-  ContactEmail   = "sanjana.d@brillio.com"
-  Application    = "brillio-coe"
-  Project        = "aws-resources-provisioning"
+  Name           = "sanjana-lambda"
+  Owner          = "Sanjana Duraiswamy"
+  ContactEmail   = "your@personalemail.com"
+  Application    = "aws-lambda-terraform"
+  Project        = "aws-task"
   ProjectEndDate = "2026-12-31"
 }
