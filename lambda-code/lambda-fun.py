@@ -6,7 +6,7 @@ logger.setLevel(logging.INFO)
 
 REQUIRED_TAGS = [
     "Name",
-    "Owner", 
+    "Owner",
     "ContactEmail",
     "Application",
     "Project",
@@ -16,12 +16,12 @@ REQUIRED_TAGS = [
 def handler(event, context):
     try:
         logger.info(f"Received event: {json.dumps(event)}")
-        
+
         tags = event.get("tags", {})
-        
+
         missing_tags = [tag for tag in REQUIRED_TAGS if tag not in tags]
         present_tags = [tag for tag in REQUIRED_TAGS if tag in tags]
-        
+
         if missing_tags:
             return {
                 "statusCode": 400,
@@ -36,9 +36,9 @@ def handler(event, context):
         return {
             "statusCode": 200,
             "body": json.dumps({
-                "status"      : "PASSED",
-                "message"     : "All mandatory tags are present!",
-                "validated"   : tags
+                "status"    : "PASSED",
+                "message"   : "All mandatory tags are present!",
+                "validated" : tags
             }, indent=2)
         }
 
