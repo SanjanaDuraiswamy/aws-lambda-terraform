@@ -20,7 +20,7 @@ jobs:
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::060118751555:role/Brillio_COE_AWS_GITHUB_060118751555_OIDC_ROLE
+          role-to-assume: arn:aws:iam::501557777808:role/github-oidc-role
           aws-region: us-east-1
 
       - name: Zip Lambda code
@@ -43,5 +43,5 @@ jobs:
       - name: Update Lambda function code
         run: |
           aws lambda update-function-code \
-            --function-name brillio-coe-lambda \
+            --function-name sanjana-lambda \
             --zip-file fileb://lambda.zip
