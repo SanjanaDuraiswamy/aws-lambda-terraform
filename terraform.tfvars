@@ -12,5 +12,5 @@ tags = {
   ContactEmail   = "swamysanj@gmail.com"
   Application    = "aws-lambda-terraform"
   Project        = "aws-task"
-  ProjectEndDate = "2026-12-31"
+  ProjectEndDate = "2026-12-31" 
 }
