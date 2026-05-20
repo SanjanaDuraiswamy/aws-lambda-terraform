@@ -2,10 +2,6 @@ variable "function_name" {
   description = "Name of the Lambda function"
 }
 
-variable "role_arn" {
-  description = "ARN of the IAM execution role"
-}
-
 variable "filename" {
   description = "Path to the Lambda ZIP file"
 }

@@ -7,9 +7,6 @@ variable "function_name" {
   description = "Name of the Lambda function"
 }
 
-variable "lambda_role_arn" {
-  description = "ARN of the pre-existing IAM execution role for Lambda"
-}
 
 variable "handler" {
   description = "Lambda handler in filename.function_name format"
