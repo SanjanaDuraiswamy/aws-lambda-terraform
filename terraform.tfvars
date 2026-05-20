@@ -1,6 +1,6 @@
 aws_region      = "us-east-1"
 function_name   = "sanjana-lambda"
-lambda_role_arn = "arn:aws:iam::501557777808:role/lambda-exec-role"
+lambda_role_arn = "arn:aws:iam::137982683320:role/lambda-exec-role"
 handler         = "lambda-fun.handler"
 runtime         = "python3.12"
 timeout         = 30
