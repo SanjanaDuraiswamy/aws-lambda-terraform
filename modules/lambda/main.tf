@@ -1,3 +1,4 @@
+
 resource "aws_iam_role" "lambda_exec" {
   name = "${var.function_name}-exec-role"
 
@@ -18,9 +19,10 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+
 resource "aws_lambda_function" "this" {
   function_name    = var.function_name
-  role             = aws_iam_role.lambda_exec.arn  
+  role             = aws_iam_role.lambda_exec.arn
   handler          = var.handler
   runtime          = var.runtime
   filename         = var.filename
@@ -35,5 +37,4 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = 14
   tags              = var.tags
-}
 }
