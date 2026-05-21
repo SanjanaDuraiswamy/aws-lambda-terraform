@@ -1,6 +1,7 @@
 # Lambda execution role
 resource "aws_iam_role" "lambda_exec" {
-  name = "${var.function_name}-exec-role"
+  name                 = "${var.function_name}-exec-role"
+  permissions_boundary = "arn:aws:iam::${var.account_id}:policy/github-oidc-boundary"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

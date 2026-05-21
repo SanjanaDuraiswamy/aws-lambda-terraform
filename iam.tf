@@ -27,6 +27,19 @@ resource "aws_iam_policy" "oidc_boundary" {
           "iam:PutRolePermissionsBoundary"
         ]
         Resource = "*"
+      },
+      {
+        Sid    = "DenyEverythingElse"
+        Effect = "Deny"
+        NotAction = [
+          "lambda:*",
+          "s3:*",
+          "glue:*",
+          "cloudwatch:*",
+          "logs:*",
+          "iam:*"
+        ]
+        Resource = "*"
       }
     ]
   })

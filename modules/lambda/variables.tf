@@ -1,3 +1,8 @@
+variable "account_id" {
+  description = "AWS account ID for constructing ARNs"
+  type        = string
+}
+
 variable "function_name" {
   description = "Name of the Lambda function"
   type        = string

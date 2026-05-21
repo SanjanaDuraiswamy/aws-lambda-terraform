@@ -1,6 +1,10 @@
+# Get current AWS account ID
+data "aws_caller_identity" "current" {}
+
 # Lambda module
 module "lambda" {
   source        = "./modules/lambda"
+  account_id    = data.aws_caller_identity.current.account_id
   function_name = var.function_name
   filename      = "lambda.zip"
   handler       = var.handler
