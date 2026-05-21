@@ -58,7 +58,7 @@ resource "aws_iam_role_policy_attachment" "oidc_lambda" {
 
 resource "aws_iam_role_policy_attachment" "oidc_glue" {
   role       = aws_iam_role.github_oidc_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSGlueServiceRole"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
 }
 
 resource "aws_iam_role_policy_attachment" "oidc_s3" {
