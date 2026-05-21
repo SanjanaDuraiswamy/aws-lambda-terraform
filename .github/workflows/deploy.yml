@@ -34,6 +34,10 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Import existing OIDC role if exists
+        run: |
+          terraform import aws_iam_role.github_oidc_role github-oidc-role || true
+
       - name: Terraform Plan
         run: terraform plan
 
