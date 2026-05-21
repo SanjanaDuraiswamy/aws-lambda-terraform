@@ -1,22 +1,10 @@
-# EC2 role — this will be BLOCKED by boundary!
-resource "aws_iam_role" "ec2_exec" {
-  name                 = "${var.instance_name}-exec-role"
-  permissions_boundary = "arn:aws:iam::137982683320:policy/github-oidc-boundary"
+# EC2 instance — this will be BLOCKED by boundary because ec2:RunInstances
+# is NOT in the AllowedServices list of github-oidc-boundary.
+resource "aws_instance" "test" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Principal = { Service = "ec2.amazonaws.com" }
-      Action    = "sts:AssumeRole"
-    }]
+  tags = merge(var.tags, {
+    Name = var.instance_name
   })
-
-  tags = var.tags
-}
-
-# Attach EC2 policy — boundary will block this!
-resource "aws_iam_role_policy_attachment" "ec2_full" {
-  role       = aws_iam_role.ec2_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
 }
