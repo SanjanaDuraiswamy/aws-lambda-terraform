@@ -1,4 +1,4 @@
-# Permissions Boundary Policy
+# Step 1 - Create Permissions Boundary Policy
 resource "aws_iam_policy" "oidc_boundary" {
   name        = "github-oidc-boundary"
   description = "Permissions boundary - Lambda, Glue, S3, CloudWatch"
@@ -14,7 +14,8 @@ resource "aws_iam_policy" "oidc_boundary" {
           "glue:*",
           "s3:*",
           "logs:*",
-          "cloudwatch:*"
+          "cloudwatch:*",
+          "iam:*"
         ]
         Resource = "*"
       }
@@ -22,10 +23,9 @@ resource "aws_iam_policy" "oidc_boundary" {
   })
 }
 
-# Attach boundary as PERMISSIONS BOUNDARY to github-oidc-role
+# Step 2 - Create github-oidc-role WITH boundary
 resource "aws_iam_role" "github_oidc_role" {
-  name = "github-oidc-role"
-
+  name                 = "github-oidc-role"
   permissions_boundary = aws_iam_policy.oidc_boundary.arn
 
   assume_role_policy = jsonencode({
@@ -48,4 +48,30 @@ resource "aws_iam_role" "github_oidc_role" {
   })
 
   tags = var.tags
+}
+
+# Step 3 - Attach permissions to github-oidc-role
+resource "aws_iam_role_policy_attachment" "oidc_lambda" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "oidc_glue" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSGlueServiceRole"
+}
+
+resource "aws_iam_role_policy_attachment" "oidc_s3" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "oidc_cloudwatch" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "oidc_iam" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
 }
