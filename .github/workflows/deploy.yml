@@ -1,4 +1,4 @@
-name: Deploy Lambda (OIDC)
+name: Deploy Lambda and Glue (OIDC)
 
 on:
   push:
@@ -39,6 +39,10 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+
+      - name: Upload Glue script to S3
+        run: |
+          aws s3 cp glue-code/glue-job.py s3://sanjana-data-bucket-137982683320/scripts/glue-job.py
 
       - name: Update Lambda function code
         run: |

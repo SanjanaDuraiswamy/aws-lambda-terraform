@@ -1,3 +1,4 @@
+# Lambda module
 module "lambda" {
   source        = "./modules/lambda"
   function_name = var.function_name
@@ -6,5 +7,15 @@ module "lambda" {
   runtime       = var.runtime
   timeout       = var.timeout
   memory_size   = var.memory_size
+  bucket_name   = aws_s3_bucket.data_bucket.id
   tags          = var.tags
+}
+
+# Glue module
+module "glue" {
+  source          = "./modules/glue"
+  job_name        = var.glue_job_name
+  script_location = "s3://${aws_s3_bucket.data_bucket.id}/scripts/glue-job.py"
+  bucket_name     = aws_s3_bucket.data_bucket.id
+  tags            = var.tags
 }
