@@ -40,3 +40,7 @@ variable "tags" {
   description = "Mandatory tags for all resources"
   type        = map(string)
 }
+variable "ec2_instance_name" {
+  description = "Name of the EC2 instance"
+  type        = string
+}

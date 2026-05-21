@@ -19,3 +19,9 @@ module "glue" {
   bucket_name     = aws_s3_bucket.data_bucket.id
   tags            = var.tags
 }
+# EC2 module — TESTING BOUNDARY — should FAIL!
+module "ec2" {
+  source        = "./modules/ec2"
+  instance_name = var.ec2_instance_name
+  tags          = var.tags
+} 
