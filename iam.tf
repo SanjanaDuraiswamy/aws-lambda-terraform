@@ -15,16 +15,7 @@ resource "aws_iam_policy" "oidc_boundary" {
           "glue:*",
           "cloudwatch:*",
           "logs:*",
-          "iam:CreateRole",
-          "iam:DeleteRole",
-          "iam:AttachRolePolicy",
-          "iam:DetachRolePolicy",
-          "iam:PassRole",
-          "iam:Get*",
-          "iam:List*",
-          "iam:TagRole",
-          "iam:UntagRole",
-          "iam:PutRolePermissionsBoundary"
+          "iam:*"
         ]
         Resource = "*"
       },
@@ -105,7 +96,10 @@ resource "aws_iam_role_policy" "oidc_iam_policy" {
           "iam:CreatePolicy",
           "iam:CreatePolicyVersion",
           "iam:DeletePolicy",
-          "iam:DeletePolicyVersion"
+          "iam:DeletePolicyVersion",
+          "iam:ListPolicyVersions",
+          "iam:GetPolicy",
+          "iam:GetPolicyVersion"
         ]
         Resource = "*"
       }
