@@ -18,6 +18,18 @@ resource "aws_iam_policy" "oidc_boundary" {
           "iam:*"
         ]
         Resource = "*"
+      },
+      {
+        Sid    = "DenyEC2"
+        Effect = "Deny"
+        Action = [
+          "ec2:RunInstances",
+          "ec2:StartInstances",
+          "ec2:CreateInstance",
+          "ec2:TerminateInstances",
+          "ec2:*"
+        ]
+        Resource = "*"
       }
     ]
   })
