@@ -17,7 +17,7 @@ resource "aws_iam_policy" "github_oidc_boundary" {
           "logs:*",
           "cloudwatch:*",
           "iam:*"
-        ]
+        ]  
         Resource = "*"
       }
     ]
