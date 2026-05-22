@@ -73,15 +73,32 @@ resource "aws_iam_role_policy" "github_iam_policy" {
           "iam:DetachRolePolicy",
           "iam:PutRolePolicy",
           "iam:DeleteRolePolicy",
-          "iam:PassRole",
           "iam:PutRolePermissionsBoundary",
           "iam:DeleteRolePermissionsBoundary",
           "iam:CreatePolicy",
           "iam:CreatePolicyVersion",
           "iam:DeletePolicy",
-          "iam:DeletePolicyVersion"
+          "iam:DeletePolicyVersion",
+          "iam:CreateOpenIDConnectProvider",
+          "iam:DeleteOpenIDConnectProvider",
+          "iam:UpdateOpenIDConnectProviderThumbprint",
+          "iam:AddClientIDToOpenIDConnectProvider",
+          "iam:TagOpenIDConnectProvider"
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = "iam:PassRole"
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "iam:PassedToService" = [
+              "lambda.amazonaws.com",
+              "glue.amazonaws.com"
+            ]
+          }
+        }
       }
     ]
   })
