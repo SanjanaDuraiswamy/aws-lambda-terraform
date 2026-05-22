@@ -16,6 +16,9 @@ resource "aws_iam_role" "github_oidc_role" {
         Action = "sts:AssumeRoleWithWebIdentity"
 
         Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
           StringLike = {
             "token.actions.githubusercontent.com:sub" =
             "repo:${var.github_repo}:*"
@@ -28,9 +31,59 @@ resource "aws_iam_role" "github_oidc_role" {
   permissions_boundary = aws_iam_policy.github_oidc_boundary.arn
 }
 
-resource "aws_iam_role_policy_attachment" "github_admin_attach" {
+# Attach only the services this role actually needs
+resource "aws_iam_role_policy_attachment" "github_lambda" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+}
 
+resource "aws_iam_role_policy_attachment" "github_s3" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "github_glue" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+}
+
+resource "aws_iam_role_policy_attachment" "github_cloudwatch" {
+  role       = aws_iam_role.github_oidc_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+}
+
+# Inline policy for IAM operations Terraform needs
+resource "aws_iam_role_policy" "github_iam_policy" {
+  name = "github-oidc-iam-policy"
   role = aws_iam_role.github_oidc_role.name
 
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "iam:Get*",
+          "iam:List*",
+          "iam:CreateRole",
+          "iam:DeleteRole",
+          "iam:UpdateRole",
+          "iam:TagRole",
+          "iam:UntagRole",
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:DeleteRolePolicy",
+          "iam:PassRole",
+          "iam:PutRolePermissionsBoundary",
+          "iam:DeleteRolePermissionsBoundary",
+          "iam:CreatePolicy",
+          "iam:CreatePolicyVersion",
+          "iam:DeletePolicy",
+          "iam:DeletePolicyVersion"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
 }

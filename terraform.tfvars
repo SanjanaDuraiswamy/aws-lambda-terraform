@@ -6,6 +6,7 @@ runtime       = "python3.12"
 timeout       = 30
 memory_size   = 256
 ec2_instance_name = "sanjana-ec2"
+github_repo       = "SanjanaDuraiswamy/aws-lambda-terraform"
 
 tags = {
   Name           = "sanjana-project"

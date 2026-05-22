@@ -44,3 +44,8 @@ variable "ec2_instance_name" {
   description = "Name of the EC2 instance"
   type        = string
 }
+
+variable "github_repo" {
+  description = "GitHub repo in format owner/repo-name"
+  type        = string
+}

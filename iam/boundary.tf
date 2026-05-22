@@ -1,73 +1,23 @@
 resource "aws_iam_policy" "github_oidc_boundary" {
 
+  name        = "github-oidc-boundary"
+  description = "Permissions boundary - allows only Lambda, S3, Glue, CloudWatch, IAM"
+
   policy = jsonencode({
     Version = "2012-10-17"
 
     Statement = [
-
       {
-        Sid    = "AllowLambda"
+        Sid    = "AllowedServices"
         Effect = "Allow"
-
         Action = [
-          "lambda:*"
-        ]
-
-        Resource = "*"
-      },
-
-      {
-        Sid    = "AllowS3"
-        Effect = "Allow"
-
-        Action = [
-          "s3:*"
-        ]
-
-        Resource = "*"
-      },
-
-      {
-        Sid    = "AllowGlue"
-        Effect = "Allow"
-
-        Action = [
-          "glue:*"
-        ]
-
-        Resource = "*"
-      },
-
-      {
-        Sid    = "AllowLogs"
-        Effect = "Allow"
-
-        Action = [
+          "lambda:*",
+          "s3:*",
+          "glue:*",
           "logs:*",
-          "cloudwatch:*"
+          "cloudwatch:*",
+          "iam:*"
         ]
-
-        Resource = "*"
-      },
-
-      {
-        Sid    = "AllowIAMForRoles"
-        Effect = "Allow"
-
-        Action = [
-          "iam:GetRole",
-          "iam:CreateRole",
-          "iam:DeleteRole",
-          "iam:UpdateRole",
-          "iam:AttachRolePolicy",
-          "iam:DetachRolePolicy",
-          "iam:PutRolePolicy",
-          "iam:DeleteRolePolicy",
-          "iam:PassRole",
-          "iam:TagRole",
-          "iam:UntagRole"
-        ]
-
         Resource = "*"
       }
     ]
