@@ -67,6 +67,7 @@ resource "aws_iam_role_policy" "github_iam_policy" {
           "iam:CreateRole",
           "iam:DeleteRole",
           "iam:UpdateRole",
+          "iam:UpdateAssumeRolePolicy",
           "iam:TagRole",
           "iam:UntagRole",
           "iam:AttachRolePolicy",
