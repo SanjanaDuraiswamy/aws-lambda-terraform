@@ -39,6 +39,7 @@ jobs:
 
       - name: Import existing resources if they exist
         run: |
+          terraform state rm aws_iam_policy.oidc_boundary || true
           terraform import module.iam.aws_iam_role.github_oidc_role github-oidc-role || true
           terraform import module.iam.aws_iam_policy.github_oidc_boundary arn:aws:iam::137982683320:policy/github-oidc-boundary || true
           terraform import module.iam.aws_iam_openid_connect_provider.github arn:aws:iam::137982683320:oidc-provider/token.actions.githubusercontent.com || true
