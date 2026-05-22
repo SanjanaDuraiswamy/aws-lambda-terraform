@@ -1,7 +1,7 @@
 resource "aws_iam_policy" "github_oidc_boundary" {
 
   name        = "github-oidc-boundary"
-  description = "Permissions boundary - allows only Lambda, S3, Glue, CloudWatch, IAM"
+  description = "Permissions boundary - Lambda, Glue, S3, CloudWatch"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -22,4 +22,8 @@ resource "aws_iam_policy" "github_oidc_boundary" {
       }
     ]
   })
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
