@@ -21,7 +21,7 @@ resource "aws_iam_role" "github_oidc_role" {
           }
           StringLike = {
             "token.actions.githubusercontent.com:sub" =
-            "repo:${var.github_repo}:*"
+            "repo:SanjanaDuraiswamy/aws-lambda-terraform:*"
           }
         }
       }

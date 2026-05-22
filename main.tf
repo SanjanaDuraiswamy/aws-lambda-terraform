@@ -3,8 +3,7 @@ data "aws_caller_identity" "current" {}
 
 # IAM module — OIDC provider, roles, boundary
 module "iam" {
-  source      = "./iam"
-  github_repo = var.github_repo
+  source = "./iam"
 }
 
 # Lambda module
