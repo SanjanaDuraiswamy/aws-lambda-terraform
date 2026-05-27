@@ -4,4 +4,4 @@ terraform {
     key    = "aws-lambda-terraform/lambda/terraform.tfstate"
     region = "us-east-1"
   }
-}
+}   
