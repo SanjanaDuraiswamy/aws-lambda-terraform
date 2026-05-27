@@ -1,20 +1,25 @@
-import json
-import logging
+import sys
 import boto3
-import os
 import csv
 import io
+import logging
+from awsglue.utils import getResolvedOptions
 
-logger = logging.getLogger()
+# Setup logging
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-s3 = boto3.client("s3")
-BUCKET_NAME = os.environ["BUCKET_NAME"]
+# Get job arguments
+args = getResolvedOptions(sys.argv, ["BUCKET_NAME"])
+BUCKET_NAME = args["BUCKET_NAME"]
 
-def handler(event, context):
+s3 = boto3.client("s3")
+
+def main():
     try:
         # Read file from S3
-        logger.info(f"Reading input file from S3 bucket: {BUCKET_NAME}")
+        logger.info(f"Reading input file from S3: {BUCKET_NAME}/input/data.csv")
         response = s3.get_object(Bucket=BUCKET_NAME, Key="input/data.csv")
         content = response["Body"].read().decode("utf-8")
 
@@ -33,25 +38,15 @@ def handler(event, context):
 
         s3.put_object(
             Bucket=BUCKET_NAME,
-            Key="output/data.csv",
+            Key="output/glue-data.csv",
             Body=output.getvalue()
         )
 
-        logger.info("Transformation complete! Output written to output/data.csv")
-
-        return {
-            "statusCode": 200,
-            "body": json.dumps({
-                "message": "File transformed successfully!",
-                "input_file": f"s3://{BUCKET_NAME}/input/data.csv",
-                "output_file": f"s3://{BUCKET_NAME}/output/data.csv",
-                "rows_processed": len(rows)
-            })
-        }
+        logger.info("Glue transformation complete! Output written to output/glue-data.csv")
 
     except Exception as e:
         logger.error(f"Error: {str(e)}")
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
-        }
+        raise
+
+if __name__ == "__main__":
+    main()

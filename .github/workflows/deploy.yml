@@ -1,4 +1,4 @@
-name: Deploy Lambda (OIDC)
+name: Deploy Lambda and Glue (OIDC)
 
 on:
   push:
@@ -20,8 +20,11 @@ jobs:
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::501557777808:role/github-oidc-role
+          role-to-assume: arn:aws:iam::137982683320:role/github-oidc-role
           aws-region: us-east-1
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
 
       - name: Zip Lambda code
         run: |
@@ -34,11 +37,22 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Import existing resources if they exist
+        run: |
+          terraform state rm aws_iam_policy.oidc_boundary || true
+          terraform import module.iam.aws_iam_role.github_oidc_role github-oidc-role || true
+          terraform import module.iam.aws_iam_policy.github_oidc_boundary arn:aws:iam::137982683320:policy/github-oidc-boundary || true
+          terraform import module.iam.aws_iam_openid_connect_provider.github arn:aws:iam::137982683320:oidc-provider/token.actions.githubusercontent.com || true
+
       - name: Terraform Plan
         run: terraform plan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+
+      - name: Upload Glue script to S3
+        run: |
+          aws s3 cp glue-code/glue-job.py s3://sanjana-data-bucket-137982683320/scripts/glue-job.py
 
       - name: Update Lambda function code
         run: |
